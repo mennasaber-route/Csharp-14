@@ -5,7 +5,7 @@
 
         public static List<Product> SearchProducts(List<Product> products, Func<Product, bool> filter)
         {
-           List<Product> result = new List<Product>();
+            List<Product> result = new List<Product>();
             foreach (Product product in products)
             {
                 if (filter(product))
@@ -16,6 +16,19 @@
             return result;
         }
 
+
+        //public static List<Product> GenerateReport(List<Product> products, Func<Product, bool> filter)
+        //{
+        //    List<Product> report = new List<Product>();
+        //    foreach (Product product in products)
+        //    {
+        //        if (filter(product))
+        //        {
+        //            report.Add(product);
+        //        }
+        //    }
+        //    return report;
+        //}
 
         static void Main(string[] args)
         {
@@ -62,6 +75,25 @@
             PrintProducts("Under $50", under50);
             PrintProducts("In Stock", inStock);
             PrintProducts("Clothing Under $100", clothingUnder100);
+
+            #endregion
+
+
+            #region Task 3.1 : Custom Report Generator
+
+            static void PrintReport( List<Product> products, Action<Product> printAction)
+            {
+                foreach (Product product in products)
+                {
+                    printAction(product);
+                }
+            }
+
+            Console.WriteLine("\n--- Short Report ---");
+            PrintReport(catalog, p => Console.WriteLine($"{p.Name} - ${p.Price}") );
+
+            Console.WriteLine("\n--- Detailed Report ---");
+            PrintReport(catalog, p => Console.WriteLine($"[{p.Category}] {p.Name} | Price: ${p.Price} | Stock: {p.Stock}"));
 
             #endregion
 
