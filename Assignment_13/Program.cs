@@ -16,19 +16,17 @@
             return result;
         }
 
+        public static List<TResult> TransformProducts<TResult>(List<Product> products, Func<Product, TResult> transform)
+        {
+            List<TResult> results = new List<TResult>();
+            foreach (Product product in products)
+            {
+                results.Add(transform(product));
+            }
+            return results;
+        }
 
-        //public static List<Product> GenerateReport(List<Product> products, Func<Product, bool> filter)
-        //{
-        //    List<Product> report = new List<Product>();
-        //    foreach (Product product in products)
-        //    {
-        //        if (filter(product))
-        //        {
-        //            report.Add(product);
-        //        }
-        //    }
-        //    return report;
-        //}
+
 
         static void Main(string[] args)
         {
@@ -81,7 +79,7 @@
 
             #region Task 3.1 : Custom Report Generator
 
-            static void PrintReport( List<Product> products, Action<Product> printAction)
+            static void PrintReport(List<Product> products, Action<Product> printAction)
             {
                 foreach (Product product in products)
                 {
@@ -90,13 +88,35 @@
             }
 
             Console.WriteLine("\n--- Short Report ---");
-            PrintReport(catalog, p => Console.WriteLine($"{p.Name} - ${p.Price}") );
+            PrintReport(catalog, p => Console.WriteLine($"{p.Name} - ${p.Price}"));
 
             Console.WriteLine("\n--- Detailed Report ---");
             PrintReport(catalog, p => Console.WriteLine($"[{p.Category}] {p.Name} | Price: ${p.Price} | Stock: {p.Stock}"));
 
             #endregion
 
+
+            #region Task 3.2 : Transform Products
+
+            Console.WriteLine("\n--- Summary List ---");
+
+            List<string> productSummaries = TransformProducts(catalog, p => $"{p.Name} (${p.Price})");
+            foreach (string summary in productSummaries)
+            {
+                Console.WriteLine(summary);
+            }
+
+            Console.WriteLine("\n--- Price Labels ---");
+
+            List<string> priceLabels = TransformProducts(catalog, p => p.Price >100 ? "Expensive!" : "Affordable");
+
+                for(int i=0; i<catalog.Count; i++)
+                {
+                    Console.WriteLine($"{catalog[i].Name}: {priceLabels[i]}");
+                }
+
+            #endregion
         }
+
     }
 }
