@@ -26,8 +26,20 @@
             return results;
         }
 
-
-
+        public static List<Product> FilterProducts(List<Product> products , Predicate<Product> predicate)
+        {
+            List<Product> newResult = new List<Product>();
+            foreach(Product product in products)
+            {
+                if (predicate(product))
+                {
+                    newResult.Add(product);
+                }
+            }
+            return newResult;
+        }
+         
+        // ------------  Main   --------------//
         static void Main(string[] args)
         {
 
@@ -114,6 +126,19 @@
                 {
                     Console.WriteLine($"{catalog[i].Name}: {priceLabels[i]}");
                 }
+
+            #endregion
+
+
+            #region Task 3.3: Filter Products
+
+            Console.WriteLine("--- Low-Stock Alert ---");
+
+            List<Product> lowStockProducts = FilterProducts(catalog , p => p.Stock < 20);
+            foreach(Product product in lowStockProducts)
+            {
+                Console.WriteLine($"[LOW STOCK] {product.Name} : only {product.Stock} left! ");
+            }
 
             #endregion
         }
